@@ -1,0 +1,32 @@
+h4, h2, h1, h3{
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.wrapper{
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.form__quest{
+    color: #FFD7E5;
+    width: 369px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: #FA759E;
+    border-radius: 20px;
+}
+.table{
+    padding: 10px;
+    border-radius: 15px;
+    border: 2px solid #A1375C;
+    text-align: center;
+}
+td{
+    border-bottom: 2px solid #A1375C;
+}
