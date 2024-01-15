@@ -2,13 +2,16 @@
 
 require_once '../../db.php';
 
-if (isset($_POST['submit'])) { 
-    $total = $_POST['search']; 
-    $sql = "SELECT * FROM Review WHERE rating = :total"; 
-    $query = $pdo->prepare($sql); 
-    $query->bindValue(':total', $total, PDO::PARAM_INT); 
-    $query->execute(); 
-    $results = $query->fetchAll(PDO::FETCH_ASSOC); 
+$stmt = $pdo->query('select * from review');
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (isset($_POST['submit'])) {
+    $total = $_POST['search'];
+    $sql = "SELECT * FROM Review WHERE rating = :total";
+    $query = $pdo->prepare($sql);
+    $query->bindValue(':total', $total, PDO::PARAM_INT);
+    $query->execute();
+    $results = $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 ?>
@@ -30,11 +33,13 @@ if (isset($_POST['submit'])) {
             <a class="fa-solid fa-arrow-left" style="text-decoration: none; color: #A1375C;" href="../login.php"></a>
             <h3 style="text-align:center">Форма отчета №2</h3>
             <form method="post" style="text-align: center; margin-bottom: 10px">
-                <input required class="searchInp" style='padding: 10px;
+                <input class="searchInp" style='padding: 10px;
                  color: #FA759E; border:none; border-radius: 15px;
                  width: 60px' placeholder="Поиск.." name='search' type="number" />
                 <button class="searchBtn" style="padding:8px; border:none;
                 border-radius: 25px; background: #A1375C" name='submit' type="submit">🔍</button>
+                <button class="searchBtn" style="padding:8px; border:none;
+                border-radius: 25px; background: #A1375C" name='submit' type="submit" formaction="../../refresh.php">♾️</button>
             </form>
             <?php if (!empty($results)): ?>
                 <table class='table'>
