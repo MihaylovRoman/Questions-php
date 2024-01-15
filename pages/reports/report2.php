@@ -1,8 +1,16 @@
 <?php
 
 require_once '../../db.php';
-$stmt = $pdo->query('select * from Review');
-$items = $stmt->fetchAll();
+
+if (isset($_POST['submit'])) { 
+    $total = $_POST['search']; 
+    $sql = "SELECT * FROM Review WHERE rating = :total"; 
+    $query = $pdo->prepare($sql); 
+    $query->bindValue(':total', $total, PDO::PARAM_INT); 
+    $query->execute(); 
+    $results = $query->fetchAll(PDO::FETCH_ASSOC); 
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,20 +29,27 @@ $items = $stmt->fetchAll();
         <div class="form__quest">
             <a class="fa-solid fa-arrow-left" style="text-decoration: none; color: #A1375C;" href="../login.php"></a>
             <h3 style="text-align:center">Форма отчета №2</h3>
-            <table class='table'>
-                <tr>
-                    <td>
-                        <h4>Оценка товара</h4>
-                    </td>
-                    <td>
-                        <h4>Сообщение</h4>
-                    </td>
-                    <td>
-                        <h4>Дата отзыва</h4>
-                    </td>
-                </tr>
-                <?php foreach ($items as $item): ?>
-                    <?php if ($item['rating'] > 3): ?> <!-- Выводит комментарии только с оценкой больше 3 -->
+            <form method="post" style="text-align: center; margin-bottom: 10px">
+                <input required class="searchInp" style='padding: 10px;
+                 color: #FA759E; border:none; border-radius: 15px;
+                 width: 60px' placeholder="Поиск.." name='search' type="number" />
+                <button class="searchBtn" style="padding:8px; border:none;
+                border-radius: 25px; background: #A1375C" name='submit' type="submit">🔍</button>
+            </form>
+            <?php if (!empty($results)): ?>
+                <table class='table'>
+                    <tr>
+                        <td>
+                            <h4>Оценка товара</h4>
+                        </td>
+                        <td>
+                            <h4>Сообщение</h4>
+                        </td>
+                        <td>
+                            <h4>Дата отзыва</h4>
+                        </td>
+                    </tr>
+                    <?php foreach ($results as $item): ?>
                         <tr>
                             <td>
                                 <?= $item['rating'] ?>
@@ -46,9 +61,9 @@ $items = $stmt->fetchAll();
                                 <?= $item['date'] ?>
                             </td>
                         </tr>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </table>
+                    <?php endforeach; ?>
+                </table>
+            <?php endif; ?>
         </div>
 
     </div>
